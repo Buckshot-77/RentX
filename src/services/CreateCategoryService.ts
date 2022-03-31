@@ -1,4 +1,5 @@
-import { CategoriesRepository } from '../repositories/CategoriesRepository';
+import { Category } from '../model/Category';
+import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
 
 interface IRequest {
     name: string;
@@ -7,15 +8,20 @@ interface IRequest {
 
 class CreateCategoryService {
     // eslint-disable-next-line prettier/prettier
-    constructor(private categoriesRepository: CategoriesRepository) { }
+    constructor(private categoriesRepository: ICategoriesRepository) { }
 
-    execute({ name, description }: IRequest): void {
+    execute({ name, description }: IRequest): Category {
         const doesCategoryExist = this.categoriesRepository.findByName(name);
 
         if (doesCategoryExist) {
             throw new Error('Category already exists!');
         }
-        this.categoriesRepository.create({ name, description });
+        const category = this.categoriesRepository.create({
+            name,
+            description,
+        });
+
+        return category;
     }
 }
 
