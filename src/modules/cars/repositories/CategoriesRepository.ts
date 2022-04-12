@@ -33,4 +33,6 @@ class CategoriesRepository implements ICategoriesRepository {
     }
 }
 
-export { CategoriesRepository };
+const categoriesRepository = new CategoriesRepository();
+
+export { categoriesRepository };
