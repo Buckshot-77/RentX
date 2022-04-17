@@ -1,12 +1,12 @@
-import { Specification } from '../model/Specification';
-import { ISpecificationsRepository } from '../repositories/ISpecificationsRepository';
+import { Specification } from '../../model/Specification';
+import { ISpecificationsRepository } from '../../repositories/ISpecificationsRepository';
 
 interface IRequest {
     name: string;
     description: string;
 }
 
-class CreateSpecificationService {
+class CreateSpecificationUseCase {
     // eslint-disable-next-line prettier/prettier
     constructor(private specificationsRepository: ISpecificationsRepository) { }
 
@@ -27,4 +27,4 @@ class CreateSpecificationService {
     }
 }
 
-export { CreateSpecificationService };
+export { CreateSpecificationUseCase };
