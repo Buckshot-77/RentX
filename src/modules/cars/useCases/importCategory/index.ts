@@ -1,5 +1,9 @@
 import { ImportCategoryController } from './importCategoryController';
+import { ImportCategoryUseCase } from './importCategoryUseCase';
 
-const importCategortyController = new ImportCategoryController();
+const importCategoryUseCase = new ImportCategoryUseCase();
+const importCategortyController = new ImportCategoryController(
+    importCategoryUseCase
+);
 
 export { importCategortyController };
