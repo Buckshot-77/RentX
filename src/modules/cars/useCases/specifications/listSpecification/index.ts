@@ -1,8 +1,10 @@
-import { SpecificationsRepository } from "../../repositories/implementations/SpecificationsRepository";
+import { prismaClient } from "../../../../../database";
+import { SpecificationsRepository } from "../../../repositories/implementations/SpecificationsRepository";
 import { ListSpecificationsController } from "./ListSpecificationsController";
 import { ListSpecificationsUseCase } from "./ListSpecificatonsUseCase";
 
-const specificationsRepository = SpecificationsRepository.getInstance();
+const specificationsRepository =
+    SpecificationsRepository.getInstance(prismaClient);
 
 const listSpecificationsUseCase = new ListSpecificationsUseCase(
     specificationsRepository

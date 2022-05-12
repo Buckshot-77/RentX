@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { Category } from "../../model/Category";
 import {
     ICategoriesRepository,
@@ -5,38 +6,42 @@ import {
 } from "../ICategoriesRepository";
 
 class CategoriesRepository implements ICategoriesRepository {
-    private categories: Category[] = [];
-
     private static INSTANCE: CategoriesRepository;
 
-    private constructor() {
-        this.categories = [];
-    }
+    private constructor(private prismaClient: PrismaClient) {}
 
-    public static getInstance(): CategoriesRepository {
+    public static getInstance(
+        prismaClient: PrismaClient
+    ): CategoriesRepository {
         if (!this.INSTANCE) {
-            this.INSTANCE = new CategoriesRepository();
+            this.INSTANCE = new CategoriesRepository(prismaClient);
         }
         return this.INSTANCE;
     }
 
-    create({ name, description }: ICreateCategoryDTO): Category {
-        const category = new Category();
-        Object.assign(category, { name, description, created_at: new Date() });
-
-        this.categories.push(category);
+    async create({ name, description }: ICreateCategoryDTO): Promise<Category> {
+        const category = await this.prismaClient.category.create({
+            data: {
+                name,
+                description,
+            },
+        });
 
         return category;
     }
 
-    list(): Category[] {
-        return this.categories;
+    async list(): Promise<Category[]> {
+        const categories = await this.prismaClient.category.findMany();
+
+        return categories;
     }
 
-    findByName(name: string): Category | undefined {
-        const category = this.categories.find(
-            (category) => category.name === name
-        );
+    async findByName(name: string): Promise<Category | null> {
+        const category = await this.prismaClient.category.findFirst({
+            where: {
+                name: name,
+            },
+        });
 
         return category;
     }

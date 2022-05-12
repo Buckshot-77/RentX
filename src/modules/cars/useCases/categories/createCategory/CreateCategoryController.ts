@@ -6,11 +6,11 @@ class CreateCategoryController {
     // eslint-disable-next-line prettier/prettier
     constructor(private createCategoryUseCase: CreateCategoryUseCase) { }
 
-    handle(request: Request, response: Response) {
+    async handle(request: Request, response: Response) {
         try {
             const { name, description } = request.body;
 
-            const category = this.createCategoryUseCase.execute({
+            const category = await this.createCategoryUseCase.execute({
                 name,
                 description,
             });

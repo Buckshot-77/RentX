@@ -1,7 +1,8 @@
 import { parse } from "csv-parse";
 import fs from "fs";
+import { Category } from "../../../model/Category";
 
-import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
+import { ICategoriesRepository } from "../../../repositories/ICategoriesRepository";
 
 interface IImportCategory {
     name: string;
@@ -39,18 +40,25 @@ class ImportCategoryUseCase {
         });
     }
 
-    async execute(file: Express.Multer.File): Promise<void> {
+    async execute(file: Express.Multer.File): Promise<Category[]> {
         const categories = await this.loadCategories(file);
-        categories.forEach((category) => {
+        const results: Category[] = [];
+        categories.forEach(async (category) => {
             const { name, description } = category;
 
             const doesCategoryExist =
                 this.categoriesRepository.findByName(name);
 
             if (!doesCategoryExist) {
-                this.categoriesRepository.create({ name, description });
+                const createdCategory = await this.categoriesRepository.create({
+                    name,
+                    description,
+                });
+
+                results.push(createdCategory);
             }
         });
+        return results;
     }
 }
 

@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { Specification } from "../../model/Specification";
 import {
     ISpecificationsRepository,
@@ -5,43 +6,45 @@ import {
 } from "../ISpecificationsRepository";
 
 class SpecificationsRepository implements ISpecificationsRepository {
-    private specifications: Specification[];
     private static INSTANCE: SpecificationsRepository;
 
-    private constructor() {
-        this.specifications = [];
-    }
+    private constructor(private prismaClient: PrismaClient) {}
 
-    public static getInstance(): SpecificationsRepository {
+    public static getInstance(
+        prismaClient: PrismaClient
+    ): SpecificationsRepository {
         if (!this.INSTANCE) {
-            this.INSTANCE = new SpecificationsRepository();
+            this.INSTANCE = new SpecificationsRepository(prismaClient);
         }
         return this.INSTANCE;
     }
 
-    create({ name, description }: ICreateSpecificationDTO): Specification {
-        const specification = new Specification();
-
-        Object.assign(specification, {
-            name,
-            description,
-            created_at: new Date(),
+    async create({
+        name,
+        description,
+    }: ICreateSpecificationDTO): Promise<Specification> {
+        const specification = await this.prismaClient.specification.create({
+            data: {
+                name,
+                description,
+            },
         });
 
-        this.specifications.push(specification);
+        return specification;
+    }
+
+    async findByName(name: string): Promise<Specification | null> {
+        const specification = await this.prismaClient.specification.findFirst({
+            where: {
+                name: name,
+            },
+        });
 
         return specification;
     }
 
-    findByName(name: string): Specification | undefined {
-        const specification = this.specifications.find(
-            (specification) => specification.name === name
-        );
-        return specification;
-    }
-
-    list(): Specification[] {
-        return this.specifications;
+    async list(): Promise<Specification[]> {
+        return await this.prismaClient.specification.findMany();
     }
 }
 
