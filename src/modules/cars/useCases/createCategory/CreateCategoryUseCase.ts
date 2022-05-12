@@ -1,5 +1,5 @@
-import { Category } from '../../model/Category';
-import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { Category } from "../../model/Category";
+import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
 
 interface IRequest {
     name: string;
@@ -14,7 +14,7 @@ class CreateCategoryUseCase {
         const doesCategoryExist = this.categoriesRepository.findByName(name);
 
         if (doesCategoryExist) {
-            throw new Error('Category already exists!');
+            throw new Error("Category already exists!");
         }
         const category = this.categoriesRepository.create({
             name,

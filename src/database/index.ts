@@ -1,20 +1,16 @@
-import { DataSource } from 'typeorm';
+/* eslint-disable no-console */
+import { DataSource } from "typeorm";
 
-import 'dotenv/config';
+import "dotenv/config";
 
 const dataSource = new DataSource({
-    type: 'postgres',
+    type: "postgres",
     host: process.env.HOST,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    migrations: ["./src/database/migrations/*.ts"],
+    entities: [],
 });
 
-dataSource
-    .initialize()
-    .then(() => {
-        console.log('Data Source has been initialized!');
-    })
-    .catch((err) => {
-        console.error('Error during Data Source initialization', err);
-    });
+export { dataSource };

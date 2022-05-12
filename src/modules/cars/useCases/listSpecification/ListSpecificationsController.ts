@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
-import { ListSpecificationsUseCase } from './ListSpecificatonsUseCase';
+import { ListSpecificationsUseCase } from "./ListSpecificatonsUseCase";
 
 class ListSpecificationsController {
     // eslint-disable-next-line prettier/prettier

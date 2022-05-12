@@ -1,5 +1,5 @@
-import { Specification } from '../../model/Specification';
-import { ISpecificationsRepository } from '../../repositories/ISpecificationsRepository';
+import { Specification } from "../../model/Specification";
+import { ISpecificationsRepository } from "../../repositories/ISpecificationsRepository";
 
 class ListSpecificationsUseCase {
     // eslint-disable-next-line prettier/prettier

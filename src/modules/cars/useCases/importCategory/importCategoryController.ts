@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
-import { ImportCategoryUseCase } from './importCategoryUseCase';
+import { ImportCategoryUseCase } from "./importCategoryUseCase";
 
 class ImportCategoryController {
     constructor(private importCategoryUseCase: ImportCategoryUseCase) {}
@@ -12,7 +12,7 @@ class ImportCategoryController {
             return response.send();
         }
 
-        return response.status(400).json({ message: 'File is required!' });
+        return response.status(400).json({ message: "File is required!" });
     }
 }
 
